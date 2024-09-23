@@ -20,7 +20,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/rithvik21252329/aws-elastic-beanstalk-express-js-sample.git'
             }
         }
     }
