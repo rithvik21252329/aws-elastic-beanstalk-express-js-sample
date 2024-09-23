@@ -14,6 +14,16 @@ pipeline {
                 }
             }
         }
+        stage('Run Security Scan') {
+            steps {
+                script {
+                    // Scan for vulnerabilities using Snyk
+                    // Ensure Snyk is installed in your Node.js environment
+                    sh 'npm install -g snyk' // Install Snyk CLI globally
+                    sh 'snyk test' // Test for vulnerabilities
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
@@ -29,6 +39,13 @@ pipeline {
                     sh 'docker run -d -p 3000:3000 aws-elastic-beanstalk-app' // Exposes the app on port 3000
                 }
             }
+        }
+    }
+    post {
+        failure {
+            // Notify or halt the pipeline if a security vulnerability is found
+            echo 'Pipeline failed due to security vulnerabilities detected. Please review the logs.'
+            error('Pipeline halted due to vulnerabilities.')
         }
     }
 }
