@@ -1,5 +1,5 @@
 pipeline {
-    agent {
+    agent any {
         docker {
             image 'node:16'
             args '-u root'
@@ -14,6 +14,13 @@ pipeline {
         stage('Security Scan') {
             steps {
                 sh 'snyk test'
+            }
+        }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
     }
