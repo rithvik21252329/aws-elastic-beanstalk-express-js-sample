@@ -1,10 +1,4 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16'
-            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
     
     stages {
         stage('Install Dependencies') {
@@ -16,13 +10,24 @@ pipeline {
                 sh 'npm install --save'
             }
         }
+        stage('Build') {
+            steps {
+                script {
+                    // Add any build steps if needed
+                    echo 'No build steps required for this app.'
+                }
+            }
+        }
         
         // You can add more stages here as needed
     }
 
     post {
+        success {
+            echo 'Deployment to Elastic Beanstalk was successful!'
+        }
         failure {
-            error 'Build failed!'
+            echo 'Deployment to Elastic Beanstalk failed!'
         }
     }
 }
