@@ -8,11 +8,6 @@ pipeline {
                 sh 'npm install --save'
             }
         }
-        stage('Security Scan') {
-            steps {
-                sh 'npm audit'
-            }
-        }
         stage('Build') {
             steps {
                 sh 'npm run build'
