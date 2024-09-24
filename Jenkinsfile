@@ -2,18 +2,24 @@ pipeline {
     agent {
         docker {
             image 'node:16'
-            args '-u root' // Run as root user inside the container
+            args '-u root:root' // optional: run as root
         }
     }
+    
     stages {
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                node {
-                    npm install --save
-                }
+                // Checkout the code (if needed)
+                checkout scm
+                
+                // Install dependencies
+                sh 'npm install --save'
             }
         }
+        
+        // You can add more stages here as needed
     }
+
     post {
         failure {
             error 'Build failed!'
