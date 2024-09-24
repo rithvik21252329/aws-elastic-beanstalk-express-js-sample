@@ -1,16 +1,19 @@
 pipeline {
     agent {
-        docker { image 'node:16' }
+        docker {
+            image 'node:16'
+            args '-u root' // Run as root user inside the container
+        }
     }
     stages {
-        stage('Install Dependencies') {
+        stage('Checkout') {
             steps {
-                sh 'npm install --save'
+                checkout scm
             }
         }
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                sh 'npm run build'
+                sh 'npm install'
             }
         }
         stage('Security Scan') {
@@ -21,8 +24,7 @@ pipeline {
     }
     post {
         always {
-            archiveArtifacts artifacts: '*/target/.jar', allowEmptyArchive: true
-            junit '*/target/surefire-reports/.xml'
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
         }
         failure {
             error 'Build failed!'
