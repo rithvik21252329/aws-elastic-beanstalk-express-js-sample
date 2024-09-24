@@ -7,8 +7,6 @@ pipeline {
                 // Checkout the code (if needed)
                 checkout scm
                 
-                // Install dependencies
-                sh 'npm install --save'
             }
         }
         stage('Build') {
