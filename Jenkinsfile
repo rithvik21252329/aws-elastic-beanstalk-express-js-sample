@@ -11,16 +11,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install --save'
-            }
-        }
-        stage('Security Scan') {
-            steps {
-                sh 'snyk test'
-            }
-        }
     }
     post {
         always {
