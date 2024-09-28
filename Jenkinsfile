@@ -1,10 +1,9 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Install Dependencies') {
             steps {
-                // Checkout the code (if needed)
                 checkout scm
                 
             }
@@ -12,21 +11,30 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Add any build steps if needed
                     echo 'No build steps required for this app.'
                 }
             }
         }
-        
-        // You can add more stages here as needed
+        stage('Snyk Scan') {
+            steps {
+                script {
+                    sh 'npm install -g snyk'
+                    sh 'snyk test'
+                }
+            }
+        }
     }
 
     post {
+        always {
+            junit '**/test-results/*.xml'
+        }
         success {
             echo 'Deployment to Elastic Beanstalk was successful!'
         }
         failure {
             echo 'Deployment to Elastic Beanstalk failed!'
+            error 'Halting pipeline due to critical vulnerabilities.'
         }
     }
 }
