@@ -25,9 +25,6 @@ pipeline {
     }
 
     post {
-        always {
-            junit '**/test-results/*.xml'
-        }
         success {
             echo 'Deployment to Elastic Beanstalk was successful!'
         }
