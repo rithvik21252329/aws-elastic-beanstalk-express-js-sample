@@ -18,7 +18,6 @@ pipeline {
         stage('Snyk Scan') {
             steps {
                 script {
-                    sh 'npm install -g snyk'
                     sh 'snyk test'
                 }
             }
