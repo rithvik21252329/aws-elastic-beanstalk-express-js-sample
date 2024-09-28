@@ -29,7 +29,6 @@ pipeline {
             }
         }
     }
-
     post {
         success {
             echo 'Deployment to Elastic Beanstalk was successful!'
